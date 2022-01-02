@@ -16,3 +16,5 @@
 
 rootProject.name = 'ts-generator'
 
+include ":kotlin-bedrock"
+project(":kotlin-bedrock").projectDir = file("C:\\Projects\\minecraft\\kotlin-bedrock\\core")

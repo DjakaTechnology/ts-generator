@@ -72,4 +72,14 @@ interface ClassTransformer {
     fun transformPropertyType(type: KType, property: KProperty<*>, klass: KClass<*>): KType {
         return type
     }
+
+    /**
+     * Returns the class name that will be processed and included
+     * in the definition.
+     *
+     * @param klass Class that comes from.
+     */
+    fun transformClassName(className: String?, klass: KClass<*>): String? {
+        return className
+    }
 }

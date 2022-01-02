@@ -20,11 +20,12 @@ internal class TypeScriptType private constructor(val types: List<String>) {
     companion object {
         fun single(type: String, nullable: Boolean, voidType: VoidType): TypeScriptType {
             return TypeScriptType(listOf(type)).let {
-                if (nullable) {
-                    it or TypeScriptType(listOf(voidType.jsTypeName))
-                } else {
-                    it
-                }
+//                if (nullable) {
+//                    it or TypeScriptType(listOf(voidType.jsTypeName))
+//                } else {
+//                    it
+//                }
+                it
             }
         }
 

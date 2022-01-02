@@ -16,14 +16,13 @@
 
 package me.ntrrgc.tsGenerator
 
+import com.google.gson.annotations.SerializedName
 import java.beans.Introspector
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import kotlin.reflect.*
-import kotlin.reflect.full.createType
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubclassOf
-import kotlin.reflect.full.superclasses
+import kotlin.reflect.full.*
+import kotlin.reflect.jvm.javaField
 import kotlin.reflect.jvm.javaType
 
 /**
@@ -115,7 +114,7 @@ class TypeScriptGenerator(
 
     private fun formatClassType(type: KClass<*>): String {
         visitClass(type)
-        return type.simpleName!!
+        return pipeline.transformClassName(type.simpleName, type)!!
     }
 
     private fun formatKType(kType: KType): TypeScriptType {
@@ -226,7 +225,8 @@ class TypeScriptGenerator(
             ""
         }
 
-        return "interface ${klass.simpleName}$templateParameters$extendsString {\n" +
+        val className = pipeline.transformClassName(klass.simpleName, klass)
+        return "export interface ${className}$templateParameters$extendsString {\n" +
             klass.declaredMemberProperties
                 .filter { !isFunctionType(it.returnType.javaType) }
                 .filter {
@@ -240,7 +240,8 @@ class TypeScriptGenerator(
                     val propertyType = pipeline.transformPropertyType(property.returnType, property, klass)
 
                     val formattedPropertyType = formatKType(propertyType).formatWithoutParenthesis()
-                    "    $propertyName: $formattedPropertyType;\n"
+//                    "    $propertyName: $formattedPropertyType;\n"
+                    "    $propertyName: $formattedPropertyType\n"
                 }
                 .joinToString("") +
             "}"
